@@ -10,22 +10,26 @@ export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [
-    new Recipe(
-      'Soup recipe',
-      "Grandma's soup recipe",
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfMYsN4NeTjvfxjcL5uru-nqtZhbVOpxoSmQ&usqp=CAU',
-      [new Ingredient('beans', 1), new Ingredient('herbs', 2)]
-    ),
-
-    new Recipe(
-      'Stew recipe',
-      "Grandma's stew recipe",
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfMYsN4NeTjvfxjcL5uru-nqtZhbVOpxoSmQ&usqp=CAU',
-      [new Ingredient('meat', 1), new Ingredient('veges', 3)]
-    ),
+    // new Recipe(
+    //   'Soup recipe',
+    //   "Grandma's soup recipe",
+    //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfMYsN4NeTjvfxjcL5uru-nqtZhbVOpxoSmQ&usqp=CAU',
+    //   [new Ingredient('beans', 1), new Ingredient('herbs', 2)]
+    // ),
+    // new Recipe(
+    //   'Stew recipe',
+    //   "Grandma's stew recipe",
+    //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfMYsN4NeTjvfxjcL5uru-nqtZhbVOpxoSmQ&usqp=CAU',
+    //   [new Ingredient('meat', 1), new Ingredient('veges', 3)]
+    // ),
   ];
 
   constructor(private shoppingListService: ShoppingListService) {}
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
   getRecipes() {
     return this.recipes.slice();
@@ -46,6 +50,11 @@ export class RecipeService {
 
   updateRecipe(index: number, newRecipe: Recipe) {
     this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
     this.recipesChanged.next(this.recipes.slice());
   }
 }
